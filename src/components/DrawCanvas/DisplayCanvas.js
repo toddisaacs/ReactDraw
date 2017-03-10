@@ -4,29 +4,9 @@ import './DrawCanvas.css';
 
 class DrawCanvas extends Component {
 
-
-  constructor(props) {
-    console.log('DrawCanvas props CONSTRUCTOR ', props);
+constructor(props) {
     super(props);
-
-    this.onMouseDown = this.onMouseDown.bind(this);
-    this.onMouseUp = this.onMouseUp.bind(this);
-    this.onMouseMove = this.onMouseMove.bind(this);
-    this.getRef = this.getRef.bind(this);
-
-    this.clearCanvas = this.clearCanvas.bind(this);
-
-    this.startPos = null;
-    this.endPos = null;
-
-    this.mouseDown = false;
   }
-
-  componentWillReceiveProps(nextProps) {
-    console.log('DrawCanvas props received ', nextProps);
-  }
-
-  //initTool
 
   getRef(ref) {
     this.canvasRef = ref;
@@ -47,14 +27,14 @@ class DrawCanvas extends Component {
       this.clearCanvas();
       let currentPos = this.getCursorPosition(e);
       this.drawRectOutline(this.startPos, currentPos);  
-      //console.log('mouse down and moving');
+      console.log('mouse down and moving');
     }
   }
 
   onMouseUp(e) {
     this.mouseDown = false;
   	this.endPos = this.getCursorPosition(e);
-		//console.log('endPos ', this.endPos);
+		console.log('endPos ', this.endPos);
 
     //workaround until we have a seperate drawing canvas
     this.clearCanvas();
@@ -71,9 +51,14 @@ class DrawCanvas extends Component {
   }
 
   drawRect(startPos, endPos)  {
-  	let width = endPos.x - startPos.x;
-  	let height = endPos.y - startPos.y;
+  		let width = endPos.x - startPos.x;
+  		let height = endPos.y - startPos.y;
+  		console.log('startPos, ', startPos);
+  		console.log('endPos, ', endPos);
+  		console.log('width ', width);
+  		console.log('height ', height);
 
+    
   	this.context.fillRect(startPos.x, startPos.y, width, height);
     //this.context .clearRect(45, 45, 60, 60);
     //this.context .strokeRect(50, 50, 50, 50);
@@ -91,17 +76,19 @@ class DrawCanvas extends Component {
     };
   }
 
+
   render() {
     return (
        <canvas 	id="drawCanvas" 
        					ref={ (ref) => this.getRef(ref) } 
-       					className="draw-canvas" 
+       					className"draw-canvas" 
+       					style="pointer-event='none';"
        					onMouseDown={this.onMouseDown}
        					onMouseUp={this.onMouseUp}
                 onMouseMove={this.onMouseMove}
        					width="1200"
        					height="1200"
-                style={ {display: this.props.disabled ? 'none' : ''} }>
+       					>
        </canvas>
     );
   }
