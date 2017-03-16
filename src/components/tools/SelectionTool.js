@@ -1,16 +1,28 @@
 export  class SelectionTool {
 
-	static TOOL_NAME = 'SelectionTool';
+	 TOOL_NAME = 'SelectionTool';
 
-	static onMouseDown = (e) => {
+	context = null;
+
+	constructor() {
+		this.canvasRef = null
+    this.context = null;
+	}
+
+	setCanvas(canvasRef) {
+    this.canvasRef = canvasRef;
+    this.context = this.canvasRef.getContext('2d');
+  }
+
+	onMouseDown = (e) => {
 		console.log('Selection Tool - onMouseDown');
 	}
 
-	static onMouseMove = (e) => {
+	onMouseMove = (e) => {
 		console.log('Selection Tool - onMouseMove');
 	}
 
-	static onMouseUp = (e) => {
+	onMouseUp = (e) => {
 		console.log('Selection Tool - onMouseUp');
 	}
 
