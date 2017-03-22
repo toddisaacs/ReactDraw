@@ -1,0 +1,92 @@
+<html>
+	<head>
+		<style type="text/css">
+			body {
+				margin: 0px;
+			}
+			.app {
+				/*display: flex;
+				flex-direction: column;
+				align-items: stretch;*/
+				height: 100vh;
+				background-color: grey;
+			}
+
+			.header {
+				height: 45px;
+				color: white;
+				background-color: #000000;
+			}
+
+
+			.editor {
+				/*display: flex;
+				flex-direction: column;
+				justify-content: flex-start;*/
+				padding: 1px;
+				background-color: #FF0000;
+				height: 700px;
+			}
+
+			.toolbar {
+				background-color: yellow;
+				height: 45px;
+				width: 100%;
+			}
+
+			.canvasGroup {
+				/*flex: 1;*/
+				position: absolute;
+				top: 90px;
+				left: 0px;
+				background-color: #00FF00;
+				/*transform: translate3d(0,0,0);*/
+				overflow: auto;
+				width: 100%;
+				height: 700px;
+				z-index: 0;
+			}
+
+	
+
+			.drawCanvas {
+				/*display: block;*/
+        position: absolute;
+				top: 0px;
+				left: 0px;
+				/*position: absolute;*/
+				/*float: left;*/
+				padding: 2px;
+			
+				
+			}
+
+			#canvas1 {
+
+				background-color: #0000FF;
+				z-index: 20;
+			}
+/*
+			#canvas2 {
+		
+				background-color: #666666;
+				z-index: 19;
+			}*/
+
+		</style>
+	</head>
+	<body>
+		<div id="app" class="app">
+			<div class="header">HEADER</div>
+			<div class="editor">
+				<div class="toolbar">toolbar</div>
+				<div class="canvasGroup">
+				<!-- 	<div class="stacked"> -->
+						<canvas id="canvas1" class="drawCanvas" width="1200px" height="1200px"></canvas>
+								<canvas id="canvas2" class="drawCanvas" width="1200px" height="1200px"></canvas>
+				<!-- 	</div> -->
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

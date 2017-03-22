@@ -4,7 +4,8 @@ import App from './App';
 import './index.css';
 
 import '../node_modules/inobounce/inobounce.js';
+
 ReactDOM.render(
   <App />,
-  document.getElementById('root')
+  document.getElementById('app')
 );

@@ -1,15 +1,19 @@
-.draw-canvas-holder {
-  background-color: #ff0000;
-	overflow:auto;
-	border:2px solid #000000;
+.editor {
+	background-color: #FF0000;
+}
+
+.toolbar {
+	background-color: yellow;
+	height: 45px;
+	width: 100%;
 }
 
 .canvasGroup {
-	background-color: lightgrey;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-
-	width: 1200px;
-	height: 1200px;
+	position: absolute;
+	top: 90px;
+	left: 0px;
+	background-color: #00FF00;
+	overflow: auto;
+	width: 100%;
+	z-index: 0;
 }

@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 import './Editor.css';
 import  DrawCanvas from '../DrawCanvas/DrawCanvas';
 import Toolbar from '../toolbar/Toolbar';
 
 import { SelectionTool, RectangleTool } from '../tools'
+
 
 class Editor extends Component {
 
@@ -15,106 +16,98 @@ class Editor extends Component {
 
     //bind funciton to this
     this.handleToolChange = this.handleToolChange.bind(this);
-    this.handleDrawCanvasFocusChange = this.handleDrawCanvasFocusChange.bind(this);
-    this.handleSelectionCanvasFocusChange = this.handleSelectionCanvasFocusChange.bind(this);
-
+    this.getTool = this.getTool.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
-
-    //this.tool =  new SelectionTool();
-    console.log('Selection TOOL_NAME ', SelectionTool.TOOL_NAME);
-    console.log('Rectangle TOOL_NAME ', RectangleTool.TOOL_NAME);
+    this.onMouseMove = this.onMouseMove.bind(this);
+    this.onMouseUp = this.onMouseUp.bind(this);
 
     this.toolMap.set('SelectionTool', new SelectionTool());
     this.toolMap.set('RectangleTool', new RectangleTool());
 
+    //set initial state
     this.state = {
-      selectedTool: this.toolMap.get('SelectionTool'),
+      selectedToolName: 'SelectionTool',
       components: []
     };
 
-    console.log('Editor state ', this.state);
+    this.editorHeight = this.props.editorHeight - 90;
+  }
+
+  getTool(toolname) {
+    return this.toolMap.get(toolname);
   }
 
   handleToolChange(toolname) {
-    console.log('Editor notified of tool change ', toolname);
-    //console.log('selection tool ', SelectionTool.TOOL_NAME);
-    let tool = this.toolMap.get(toolname);
-
-    //When we are in DrawingMode like Pen, Rect, etc use Drawcanvas
-    //Activate selection canvas when in selection mode
-
-
-    // switch (toolname) {
-    //   case SelectionTool.TOOL_NAME:
-    //     tool = toolname.;
-    //     break;
-    //   case RectangleTool.TOOL_NAME:
-    //     tool = RectangleTool;
-    //     break;
- 
-    //   default:
-    //     tool = SelectionTool;
-    // }
-
-    //update state so everyone interested can respond
     this.setState({
-      selectedTool: tool
+      selectedToolName: toolname
     });
-
-
   }
 
-  onMouseDown(e) {
-    this.mouseDown = true;
-    this.startPos = this.getCursorPosition(e);
-    console.log('Editor startPos ', this.startPos);
+  /* delegate mouse events to the active tool */
+  onMouseDown = (e) => {
+    this.getTool(this.state.selectedToolName).onMouseDown(e);
   }
 
-  handleDrawCanvasFocusChange(canvasRef) {
-    this.drawCanvasRef = canvasRef;
-    this.toolMap.get('RectangleTool').setCanvas(canvasRef);
-
+  onMouseMove = (e) => {
+    this.getTool(this.state.selectedToolName).onMouseMove(e);
   }
 
-  handleSelectionCanvasFocusChange(canvasRef) {
-    this.selectionCanvasRef = canvasRef;
-    this.toolMap.get('SelectionTool').setCanvas(canvasRef);
+  onMouseUp = (e) => {
+    this.getTool(this.state.selectedToolName).onMouseUp(e);
   }
 
- // componentDidMount() {
- //    //TODO grab from state
- //    //update tools with context 
+  componentWillReceiveProps(nextProps) {
+    console.log('Editor props received ', nextProps);
+    this.editorHeight = nextProps.editorHeight - 90;
+  }
 
-
-    
- //  }
-// <DrawCanvas id="displayCanvas" 
-//                         disabled={ true } 
-//                         tool={ null } />
-                        
+  componentDidMount() {
+    //The canvas ref is valid now
+    //console.log('componentDidMount', this.drawCanvas);
+    this.getTool('RectangleTool').setCanvas(this.drawCanvas);
+    this.getTool('SelectionTool').setCanvas(this.selectionCanvas);
+  }
+                   
   render() {
+    const { canvasSize, editorHeight } = this.props;
+
+    const canvasGroupStyle = {
+      height: editorHeight, 
+      cursor:this.getTool(this.state.selectedToolName).cursor | 'crosshair'
+    };
+
     return (
-      <div>
-        <Toolbar onChange={this.handleToolChange} tool={this.state.selectedTool}/>
-        <div id="Div1" className="draw-canvas-holder" >
-          <div className="canvasGroup">
-            
-           <DrawCanvas id="drawCanvas" 
-                        disabled={ this.state.selectedTool.TOOL_NAME === SelectionTool.TOOL_NAME } 
-                        tool={this.state.selectedTool} 
-                        onFocusChange={this.handleDrawCanvasFocusChange}/>
+      <div className="editor">
+        <Toolbar className="toolbar" onChange={this.handleToolChange} toolname={this.state.selectedToolName} />
+
+        <div className="canvasGroup" 
+             style={canvasGroupStyle}
+             onMouseDown={this.onMouseDown}
+             onMouseMove={this.onMouseMove}
+             onMouseUp={this.onMouseUp}>
+
+            <DrawCanvas id="drawCanvas" 
+                        ref={(canvas) => this.drawCanvas = canvas }
+                        canvasSize={canvasSize}
+                        style={{zIndex: 20, height: editorHeight}}
+                         />
                       
-            { /*
+            
             <DrawCanvas id="selectionCanvas" 
-                        disabled={ this.state.selectedTool.TOOL_NAME !== SelectionTool.TOOL_NAME } 
-                        tool={this.state.selectedTool} 
-                        onFocusChange={this.handleSelectionCanvasFocusChange}/>
-            */}
-          </div>
+                        ref={(canvas) => this.selectionCanvas = canvas }
+                        canvasSize={canvasSize}
+                        style={{zIndex: 19, height: editorHeight}}
+                         />
+            
         </div>
       </div>
     );
   }
+}
+
+DrawCanvas.propTypes = {
+  canvasSize: PropTypes.object.isRequired,
+  editorHeight: PropTypes.number
 }
 
 export default Editor;

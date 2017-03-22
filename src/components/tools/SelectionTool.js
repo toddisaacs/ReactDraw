@@ -1,17 +1,16 @@
 export  class SelectionTool {
 
-	 TOOL_NAME = 'SelectionTool';
-
+	TOOL_NAME = 'SelectionTool';
+  
 	context = null;
-
+	cursor = 'default';
+	
 	constructor() {
 		this.canvasRef = null
-    this.context = null;
 	}
 
 	setCanvas(canvasRef) {
     this.canvasRef = canvasRef;
-    this.context = this.canvasRef.getContext('2d');
   }
 
 	onMouseDown = (e) => {

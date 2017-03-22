@@ -5,7 +5,6 @@ class Toolbar extends Component {
   constructor(props) {
     super(props);
 
-    console.log('Toolbar props', props);
     this.handleToolChange = this.handleToolChange.bind(this);
   }
 
@@ -15,19 +14,20 @@ class Toolbar extends Component {
   }
 
   render() {
+    const { toolname } = this.props || 'SelectionTool';
+
     return (
       <div id="toolbar" className="toolbar" >
         <input  type="radio" 
                 name="tool" 
                 value='SelectionTool'
-                checked={this.props.tool.TOOL_NAME === 'SelectionTool'}
-                onFocus={console.log('selection focus')}
+                checked={toolname === 'SelectionTool'}
                 onChange={this.handleToolChange} /> S
 
         <input  type="radio" 
                 name="tool" 
                 value='RectangleTool'
-                checked={this.props.tool.TOOL_NAME === 'RectangleTool'}
+                checked={toolname === 'RectangleTool'}
                 onChange={this.handleToolChange}  /> R
       </div>
     );
@@ -35,7 +35,7 @@ class Toolbar extends Component {
 }
 
 Toolbar.propTypes = {
-  tool: PropTypes.object
+  toolname: PropTypes.string
 }
 
 export default Toolbar;
