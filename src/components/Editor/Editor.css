@@ -3,7 +3,7 @@
 }
 
 .toolbar {
-	background-color: yellow;
+	background-color: #8B998B;
 	height: 45px;
 	width: 100%;
 }
@@ -12,7 +12,7 @@
 	position: absolute;
 	top: 90px;
 	left: 0px;
-	background-color: #00FF00;
+	/*background-color: #DED5C9;*/
 	overflow: auto;
 	width: 100%;
 	z-index: 0;

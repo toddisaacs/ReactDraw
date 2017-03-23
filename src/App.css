@@ -1,11 +1,19 @@
-
+/**/
 .App {
   height: 100vh;
-  background-color: grey;
+  background-color: #FFFFFF;
 }
 
 .App-header {
   height: 45px;
   color: white;
-  background-color: #000000;
+  background-color: #555B63;
 }
+
+/*
+#555B63
+#68846A
+#8B998B
+#CBC4BB
+#DED5C9
+*/

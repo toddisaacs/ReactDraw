@@ -36,7 +36,6 @@ class DrawCanvas extends Component {
        <canvas 	
        					ref={ (ref) => { this.canvasRef = ref; } } 
        					className="draw-canvas" 
-                onFocus={this.handleFocusChange}
        					width={canvasSize.width}
        					height={canvasSize.height}
                 >

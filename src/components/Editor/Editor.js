@@ -21,14 +21,16 @@ class Editor extends Component {
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
 
+
+
     this.toolMap.set('SelectionTool', new SelectionTool());
     this.toolMap.set('RectangleTool', new RectangleTool());
 
     //set initial state
-    this.state = {
-      selectedToolName: 'SelectionTool',
-      components: []
-    };
+    // this.state = {
+    //   selectedToolName: 'SelectionTool',
+    //   components: []
+    // };
 
     this.editorHeight = this.props.editorHeight - 90;
   }
@@ -38,65 +40,75 @@ class Editor extends Component {
   }
 
   handleToolChange(toolname) {
-    this.setState({
-      selectedToolName: toolname
-    });
+    this.props.onToolChange(toolname);
+    // this.setState({
+    //   selectedToolName: toolname
+    // });
   }
 
   /* delegate mouse events to the active tool */
   onMouseDown = (e) => {
-    this.getTool(this.state.selectedToolName).onMouseDown(e);
+    this.getTool(this.props.selectedToolName).onMouseDown(e);
   }
 
   onMouseMove = (e) => {
-    this.getTool(this.state.selectedToolName).onMouseMove(e);
+    this.getTool(this.props.selectedToolName).onMouseMove(e);
   }
 
   onMouseUp = (e) => {
-    this.getTool(this.state.selectedToolName).onMouseUp(e);
+    this.getTool(this.props.selectedToolName).onMouseUp(e);
   }
 
   componentWillReceiveProps(nextProps) {
     console.log('Editor props received ', nextProps);
-    this.editorHeight = nextProps.editorHeight - 90;
+    //this.editorHeight = nextProps.editorHeight - 90;
+
+    //draw shapes
+    nextProps.shapes.forEach(shape => {
+      shape.draw(this.drawCanvas.context);
+    });
   }
+
+ 
 
   componentDidMount() {
     //The canvas ref is valid now
-    //console.log('componentDidMount', this.drawCanvas);
-    this.getTool('RectangleTool').setCanvas(this.drawCanvas);
+    this.getTool('RectangleTool').setCanvas(this.selectionCanvas);
     this.getTool('SelectionTool').setCanvas(this.selectionCanvas);
   }
-                   
+              
   render() {
     const { canvasSize, editorHeight } = this.props;
 
     const canvasGroupStyle = {
-      height: editorHeight, 
-      cursor:this.getTool(this.state.selectedToolName).cursor | 'crosshair'
+      height: editorHeight - 90, 
+      cursor:this.getTool(this.props.selectedToolName).cursor | 'crosshair'
     };
 
+    console.log('canvasGroup Style', canvasGroupStyle);
     return (
       <div className="editor">
-        <Toolbar className="toolbar" onChange={this.handleToolChange} toolname={this.state.selectedToolName} />
+        <Toolbar className="toolbar" onChange={this.handleToolChange} toolname={this.props.selectedToolName} />
 
         <div className="canvasGroup" 
+             ref={(div) => this.canvasGroup = div}
              style={canvasGroupStyle}
              onMouseDown={this.onMouseDown}
              onMouseMove={this.onMouseMove}
-             onMouseUp={this.onMouseUp}>
+             onMouseUp={this.onMouseUp}
+        >
 
             <DrawCanvas id="drawCanvas" 
                         ref={(canvas) => this.drawCanvas = canvas }
                         canvasSize={canvasSize}
-                        style={{zIndex: 20, height: editorHeight}}
+                    
                          />
                       
             
             <DrawCanvas id="selectionCanvas" 
                         ref={(canvas) => this.selectionCanvas = canvas }
                         canvasSize={canvasSize}
-                        style={{zIndex: 19, height: editorHeight}}
+            
                          />
             
         </div>

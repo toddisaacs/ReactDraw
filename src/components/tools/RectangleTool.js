@@ -1,4 +1,6 @@
-export  class RectangleTool {
+import Rectangle from '../shapes/Rectangle';
+
+export default class RectangleTool {
 
 	TOOL_NAME = 'RectangleTool';
   cursor = 'crosshair';
@@ -26,19 +28,30 @@ export  class RectangleTool {
   }
 
   drawRectOutline(startPos, endPos) {
-      let width = endPos.x - startPos.x;
-      let height = endPos.y - startPos.y;
+    const g = this.drawCanvas.context;
 
-      this.drawCanvas.context.setLineDash([6]);
-      this.drawCanvas.context.strokeRect(startPos.x, startPos.y, width, height);
-      this.drawCanvas.context.setLineDash([0]);
+    let width = endPos.x - startPos.x;
+    let height = endPos.y - startPos.y;
+
+    g.setLineDash([6]);
+    g.strokeRect(startPos.x, startPos.y, width, height);
+    g.setLineDash([0]);
   }
 
   drawRect(startPos, endPos)  {
     let width = endPos.x - startPos.x;
     let height = endPos.y - startPos.y;
 
-    this.drawCanvas.context.fillRect(startPos.x, startPos.y, width, height);
+    const shape = new Rectangle({x: startPos.x, y: startPos.y, width: width, height: height});
+
+
+    //add shape to the displaylist 
+    var event = new CustomEvent('addShape',  {'detail': shape} );
+    document.dispatchEvent(event);
+
+
+    //shape.draw(this.drawCanvas.context);
+    //this.drawCanvas.context.fillRect(startPos.x, startPos.y, width, height);
   }
 
   clearCanvas() {
@@ -47,14 +60,12 @@ export  class RectangleTool {
 
 
 	onMouseDown(e) {
-   
     this.mouseDown = true;
     this.startPos = this.getCursorPosition(e);
     console.log('startPos ', this.startPos);
   }
 
   onMouseMove(e) {
-
     if (this.mouseDown) {
       this.drawCanvas.clearCanvas();
       let currentPos = this.getCursorPosition(e);
@@ -64,6 +75,7 @@ export  class RectangleTool {
 
   onMouseUp(e) {
     this.mouseDown = false;
+
   	this.endPos = this.getCursorPosition(e);
 
     //workaround until we have a seperate drawing canvas
@@ -73,4 +85,4 @@ export  class RectangleTool {
 
 };
 
-export { RectangleTool as default };
+//export { RectangleTool as default };
