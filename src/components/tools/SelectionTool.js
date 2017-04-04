@@ -30,10 +30,10 @@ export  class SelectionTool extends BaseTool {
 
   	this.endPos = this.getCursorPosition(e);
 
-    //workaround until we have a seperate drawing canvas
+    //workaround until we have a separate drawing canvas
     this.drawCanvas.clearCanvas();
   	
-  	//select everything bound by the selction box or under pointer
+  	//select everything bound by the selection box or under pointer
   }
 };
 

@@ -16,7 +16,7 @@ class Editor extends Component {
   constructor(props) {
     super(props);
 
-    //bind funcitons
+    //bind functions
     this.handleToolChange = this.handleToolChange.bind(this);
     this.onInspectorChange = this.onInspectorChange.bind(this);
 
@@ -60,15 +60,15 @@ class Editor extends Component {
   /* delegate mouse events to the active tool */
   onMouseDown = (e) => {
     this.state.selectedTool.onMouseDown(e);
-  }
+  };
 
   onMouseMove = (e) => {
     this.state.selectedTool.onMouseMove(e);
-  }
+  };
 
   onMouseUp = (e) => {
     this.state.selectedTool.onMouseUp(e);
-  }
+  };
 
   handleToolChange(event) {
     const tools = this.state.tools;
@@ -88,9 +88,9 @@ class Editor extends Component {
 
   onInspectorChange(e) {
     const selectedTool = this.state.selectedTool;
-    let value = isNumeric(e.target.value) ? parseInt(e.target.value, 10) : e.target.value
+    let value = isNumeric(e.target.value) ? parseInt(e.target.value, 10) : e.target.value;
 
-    selectedTool.currentShapeProperties[e.target.name] = value
+    selectedTool.currentShapeProperties[e.target.name] = value;
 
     this.setState({
       selectedTool
@@ -144,8 +144,7 @@ class Editor extends Component {
                  onInspectorChange={this.onInspectorChange}
                  shapeProperties={this.shapeProperties} />
 
-        <div className="canvasGroup" 
-             ref={(div) => this.canvasGroup = div}
+        <div className="canvasGroup"
              style={canvasGroupStyle}
              onMouseDown={this.onMouseDown}
              onMouseMove={this.onMouseMove}
@@ -153,14 +152,12 @@ class Editor extends Component {
 
             <DrawCanvas id="drawCanvas" 
                         ref={(canvas) => this.drawCanvas = canvas }
-                        canvasSize={canvasSize}
-                         />
+                        canvasSize={canvasSize} />
                       
             
             <DrawCanvas id="selectionCanvas" 
                         ref={(canvas) => this.selectionCanvas = canvas }
-                        canvasSize={canvasSize}
-                         />
+                        canvasSize={canvasSize} />
               
         </div>
       </div>
@@ -171,6 +168,6 @@ class Editor extends Component {
 DrawCanvas.propTypes = {
   canvasSize: PropTypes.object.isRequired,
   editorHeight: PropTypes.number
-}
+};
 
 export default Editor;

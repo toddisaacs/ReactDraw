@@ -17,7 +17,7 @@ export default class Inspector extends Component {
 										name="strokeWidth"
 										value={shapeProperties.strokeWidth}
 										onChange={this.props.onInspectorChange}>
-							{	[...Array(50)].map((x, i) => 
+							{	[...new Array(50)].map((x, i) =>
 								<option key={i} value={i}>{i}</option>
 							)}
 						</select>

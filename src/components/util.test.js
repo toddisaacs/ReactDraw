@@ -1,6 +1,7 @@
 
 import {isNumeric} from './util';
 
+//noinspection JSUnresolvedFunction
 it('test isNumeric', () => {
     expect(isNumeric('1')).toBeTruthy();
     expect(isNumeric('1.2')).toBeTruthy();

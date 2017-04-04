@@ -5,8 +5,6 @@ import Inspector from './Inspector';
 
 class Toolbar extends Component {
 
-  selectTool = null;
-
   componentWillMount() {
     this.shapeProperties = this.props.selectedTool.currentShapeProperties;
   }
@@ -46,6 +44,6 @@ Toolbar.propTypes = {
   tools: PropTypes.object,
   selectedTool: PropTypes.object,
   onChange: PropTypes.func
-}
+};
 
 export default Toolbar;

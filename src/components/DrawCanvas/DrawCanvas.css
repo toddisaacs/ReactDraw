@@ -1,6 +1,6 @@
 .draw-canvas {
 	position: absolute;
-	top: 0px;			
-	left: 0px;
-  border: 2px solid pink;
+	top: 0;
+	left: 0;
+  	border: 2px solid pink;
 }

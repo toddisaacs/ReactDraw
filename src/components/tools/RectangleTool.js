@@ -50,7 +50,7 @@ export default class RectangleTool extends BaseTool {
 
 
     //add shape to the displaylist 
-    var event = new CustomEvent('addShape',  {'detail': shape} );
+    const event = new CustomEvent('addShape',  {'detail': shape} );
     document.dispatchEvent(event);
   }
 
@@ -62,7 +62,6 @@ export default class RectangleTool extends BaseTool {
 	onMouseDown(e) {
     this.mouseDown = true;
     this.startPos = this.getCursorPosition(e);
-    console.log('startPos ', this.startPos);
   }
 
   onMouseMove(e) {

@@ -1,12 +1,11 @@
 export default class BaseTool {
 
-
   cursor = 'crosshair';
 
   currentShapeProperties = {};
 
   constructor() {
-    this.drawCanvas = null
+    this.drawCanvas = null;
     this.context = null;
 
     this.startPos = null;
@@ -48,7 +47,6 @@ export default class BaseTool {
 	onMouseDown(e) {
     this.mouseDown = true;
     this.startPos = this.getCursorPosition(e);
-   // console.log('startPos ', this.startPos);
   }
 
   onMouseMove(e) {

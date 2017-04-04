@@ -11,7 +11,7 @@
 .canvasGroup {
 	position: absolute;
 	top: 90px;
-	left: 0px;
+	left: 0;
 	/*background-color: #DED5C9;*/
 	overflow: auto;
 	width: 100%;
