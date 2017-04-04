@@ -127,7 +127,9 @@ class Editor extends Component {
   }
               
   render() {
-    const { canvasSize, editorHeight } = this.props;
+    const { canvasSize } = this.props;
+
+    let editorHeight = (this.props.editorHeight) ? this.props.editorHeight : 200;
 
     const canvasGroupStyle = {
       height: editorHeight - 90

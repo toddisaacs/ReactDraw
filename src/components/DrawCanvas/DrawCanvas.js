@@ -6,7 +6,6 @@ class DrawCanvas extends Component {
 
 
   constructor(props) {
-    console.log('DrawCanvas props CONSTRUCTOR ', props);
     super(props);
 
     this.getRef = this.getRef.bind(this);
@@ -50,6 +49,6 @@ DrawCanvas.propTypes = {
   onMouseDown: PropTypes.func,
   onMouseMove: PropTypes.func,
   onMouseUp: PropTypes.func
-}
+};
 
 export default DrawCanvas;
