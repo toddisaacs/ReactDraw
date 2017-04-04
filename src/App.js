@@ -5,27 +5,25 @@ import  Editor from './components/Editor/Editor';
 
 class App extends Component {
 
+  //Timer to delay resize events until we are "done" resizing
   waitForResize;
+  tools = {};
 
 	constructor(props) {
     super(props);
 
     //bind methods
+    this.windowResize = this.windowResize.bind(this);
     this.changeTool = this.changeTool.bind(this);
-    this.addShape = this.addShape.bind(this);
+    this.onAddShape = this.onAddShape.bind(this);
 
     //set initial state
     this.state = {
       appHeight: window.screen.availHeight,
       canvasSize: {width: 1200, height:1200},
-      selectedToolName: 'SelectionTool',
+      //workaround for handling the drawing outside of react TODO look at react canvas
       shapes: []
     };
-
-     console.log('App - appHeight on constructor ', window.screen.availHeight);
-    //TODO - Can this be handled in CSS while preserving the canvas hierarchy?
-    //listen for resize so we can set up editor properly 
-    this.windowResize = this.windowResize.bind(this);
   }
 
   resizeEditor() {
@@ -33,9 +31,11 @@ class App extends Component {
   }
 
   changeTool(toolname) {
+
     this.setState({
-      selectedToolName: toolname
+      selectedToolName: toolname,
     });
+
   }
 
   /*
@@ -50,27 +50,28 @@ class App extends Component {
     }, 250);
   }
 
-  addShape(e) {
+  onAddShape(e) {
     console.log('Shape Added', e.detail);
 
+    //keep track off all shapes to display
     this.setState({
       shapes: this.state.shapes.concat([e.detail])
     });
   }
 
   /*
-    Could not figre out how to get the canvas to layout with CSS on top of each other 
+    Could not figure out how to get the canvas to layout with just CSS on top of each other 
     without setting the size.  Using a window resize listener to update after a resize.
   */
 	componentDidMount() {
     window.addEventListener('resize', this.windowResize);
-    document.addEventListener('addShape', this.addShape, false);
+    document.addEventListener('addShape', this.onAddShape, false);
 		this.resizeEditor();
 	}
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.windowResize);
-    document.removeEventListener('addShape', this.addShape, false);
+    document.removeEventListener('addShape', this.onAddShape, false);
   }
 
   render() {
@@ -83,6 +84,7 @@ class App extends Component {
                 selectedToolName={this.state.selectedToolName}
                 onToolChange={this.changeTool}
                 shapes={this.state.shapes}
+                tools={this.state.tools}
         />
       </div>
     );

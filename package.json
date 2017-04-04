@@ -5,6 +5,7 @@
   "dependencies": {
     "inobounce": "^0.1.4",
     "react": "^15.4.2",
+    "react-color": "^2.11.4",
     "react-dom": "^15.4.2",
     "uuid": "^3.0.1"
   },

@@ -1,18 +1,18 @@
 import Rectangle from '../shapes/Rectangle';
+import BaseTool from './BaseTool';
 
-export default class RectangleTool {
+export default class RectangleTool extends BaseTool {
 
 	TOOL_NAME = 'RectangleTool';
   cursor = 'crosshair';
-  
+
+  currentShapeProperties = {};
+
   constructor() {
-    this.drawCanvas = null
-    this.context = null;
+    super();
 
-    this.startPos = null;
-    this.endPos = null;
-
-    this.mouseDown = false;
+    //default the shape props 
+    this.currentShapeProperties = {...Rectangle.defaultShapeProperties};
   }
 
   setCanvas(drawCanvas) {
@@ -29,7 +29,7 @@ export default class RectangleTool {
 
   drawRectOutline(startPos, endPos) {
     const g = this.drawCanvas.context;
-
+    
     let width = endPos.x - startPos.x;
     let height = endPos.y - startPos.y;
 
@@ -44,14 +44,14 @@ export default class RectangleTool {
 
     const shape = new Rectangle({x: startPos.x, y: startPos.y, width: width, height: height});
 
+    shape.fillColor = this.currentShapeProperties.fillColor;
+    shape.strokeWidth = this.currentShapeProperties.strokeWidth;
+    shape.setProperties(this.currentShapeProperties);
+
 
     //add shape to the displaylist 
     var event = new CustomEvent('addShape',  {'detail': shape} );
     document.dispatchEvent(event);
-
-
-    //shape.draw(this.drawCanvas.context);
-    //this.drawCanvas.context.fillRect(startPos.x, startPos.y, width, height);
   }
 
   clearCanvas() {

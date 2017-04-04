@@ -1,30 +1,40 @@
-export  class SelectionTool {
+import BaseTool from './BaseTool';
+
+export  class SelectionTool extends BaseTool {
 
 	TOOL_NAME = 'SelectionTool';
   
 	context = null;
 	cursor = 'default';
-	
-	constructor() {
-		this.canvasRef = null
-	}
+	currentShapeProperties = {};
+	selected = false;
 
-	setCanvas(canvasRef) {
-    this.canvasRef = canvasRef;
+ constructor() {
+    super();
+
+    //default the shape props 
+    this.currentShapeProperties = {...SelectionTool.defaultShapeProperties};
   }
 
-	onMouseDown = (e) => {
-		console.log('Selection Tool - onMouseDown');
-	}
 
-	onMouseMove = (e) => {
-		console.log('Selection Tool - onMouseMove');
-	}
+	setCanvas(drawCanvas) {
+    this.drawCanvas = drawCanvas;
+  }
 
-	onMouseUp = (e) => {
-		console.log('Selection Tool - onMouseUp');
-	}
+	clearCanvas() {
+    this.drawCanvas.context.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
+  }
 
+  onMouseUp(e) {
+    this.mouseDown = false;
+
+  	this.endPos = this.getCursorPosition(e);
+
+    //workaround until we have a seperate drawing canvas
+    this.drawCanvas.clearCanvas();
+  	
+  	//select everything bound by the selction box or under pointer
+  }
 };
 
 export { SelectionTool as default };

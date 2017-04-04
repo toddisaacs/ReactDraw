@@ -1,37 +1,60 @@
+import Shape from './Shape';
 
-import uuid from 'uuid/v4';
+export default class Rectangle extends Shape {
 
-export default class Rectangle {
+	static defaultShapeProperties = {
+		fillColor: '#006600',
+		strokeWidth: 5,
+		strokeColor: '#000000',
+		cornerRadius: 8
+	};
 
-	constructor(props) {
-		this.id = uuid();
-		this.x = props.x || 0;
-		this.y = props.y || 0;
+	setProperties(shapeProps) {
+		const {strokeWidth, strokeColor, fillColor, cornerRadius} = shapeProps;
 
-		this.width = props.width || 0;
-		this.height = props.height || 0;
-
-		this.lineWidth = props.lineWidth || 5;
-		this.strokeStyle = props.strokeStyle || '#FFDD00';
-		this.fillStyle = props.fillStyle || '#00DDFF';
+		this.strokeWidth = strokeWidth;
+		this.strokeColor = strokeColor;
+		this.fillColor = fillColor;
+		this.cornerRadius = cornerRadius;
 	}
 
-	draw(context) {
-		if (!context) {
-			return;
-		}
+	//borrowed parts from: http://js-bits.blogspot.com/2010/07/canvas-rounded-corner-rectangles.html
+	roundedRect(ctx, x, y, width, height, fillColor, strokeWidth, strokeColor, radius) {
 
-		//save the context state like stroke, fill, transform
-		context.save();
+	  if (typeof radius === "undefined") {
+	    radius = 0;
+	  }
+	  ctx.beginPath();
+	  ctx.moveTo(x + radius, y);
+	  ctx.lineTo(x + width - radius, y);
+	  ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+	  ctx.lineTo(x + width, y + height - radius);
+	  ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+	  ctx.lineTo(x + radius, y + height);
+	  ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+	  ctx.lineTo(x, y + radius);
+	  ctx.quadraticCurveTo(x, y, x + radius, y);
+	  ctx.closePath();
 
-		context.fillStyle = this.fillStyle;
-		context.fillRect(this.x, this.y, this.width, this.height);
+	  if (strokeWidth >= 0) {
+	  	ctx.lineWidth = this.strokeWidth;
+	  	ctx.strokeStyle = strokeColor;
+	    ctx.stroke();
+	  }
 
-		context.lineWidth = this.lineWidth;
-		context.strokeStyle = this.strokeStyle;
-		context.strokeRect(this.x, this.y, this.width, this.height);
+	  if (fillColor ) {
+	  	ctx.fillStyle = fillColor;
+	    ctx.fill();
+	  }
+	}
+
+	draw(ctx) {
+		//save the ctx state like stroke, fill, transform
+		ctx.save();
+
+		this.roundedRect(ctx, this.x, this.y, this.width, this.height, this.fillColor, this.strokeWidth, this.strokeColor, this.cornerRadius);
 
 		//restore context state
-		context.restore();
+		ctx.restore();
 	}
 }

@@ -4,113 +4,164 @@ import './Editor.css';
 import  DrawCanvas from '../DrawCanvas/DrawCanvas';
 import Toolbar from '../toolbar/Toolbar';
 
-import { SelectionTool, RectangleTool } from '../tools'
+import {isNumeric} from '../util';
 
+import { SelectionTool, RectangleTool } from '../tools'
 
 class Editor extends Component {
 
-  toolMap = new Map();
+  shapeProperties = {};
+  tools = {};
 
   constructor(props) {
     super(props);
 
-    //bind funciton to this
+    //bind funcitons
     this.handleToolChange = this.handleToolChange.bind(this);
-    this.getTool = this.getTool.bind(this);
+    this.onInspectorChange = this.onInspectorChange.bind(this);
+
+    this.getActiveTool = this.getActiveTool.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
 
+    //create all the tools
+    const selectionTool = new SelectionTool();
+    selectionTool.selected = true;
 
+    const rectangleTool = new RectangleTool();
 
-    this.toolMap.set('SelectionTool', new SelectionTool());
-    this.toolMap.set('RectangleTool', new RectangleTool());
-
-    //set initial state
-    // this.state = {
-    //   selectedToolName: 'SelectionTool',
-    //   components: []
-    // };
+    this.tools[selectionTool.TOOL_NAME] = selectionTool;
+    this.tools[rectangleTool.TOOL_NAME] = rectangleTool;
 
     this.editorHeight = this.props.editorHeight - 90;
+
+    //set initial state
+    this.state = {
+      tools: this.tools
+    }
+
   }
 
-  getTool(toolname) {
-    return this.toolMap.get(toolname);
+  getActiveTool() {
+    let selectedTool = null;
+
+    Object.keys(this.state.tools).forEach(key => {
+      const tool = this.state.tools[key];
+      if (tool.selected ) {
+        selectedTool = tool;
+      }
+    });
+
+    return selectedTool;
   }
 
-  handleToolChange(toolname) {
-    this.props.onToolChange(toolname);
-    // this.setState({
-    //   selectedToolName: toolname
-    // });
-  }
-
+ 
   /* delegate mouse events to the active tool */
   onMouseDown = (e) => {
-    this.getTool(this.props.selectedToolName).onMouseDown(e);
+    this.state.selectedTool.onMouseDown(e);
   }
 
   onMouseMove = (e) => {
-    this.getTool(this.props.selectedToolName).onMouseMove(e);
+    this.state.selectedTool.onMouseMove(e);
   }
 
   onMouseUp = (e) => {
-    this.getTool(this.props.selectedToolName).onMouseUp(e);
+    this.state.selectedTool.onMouseUp(e);
+  }
+
+  handleToolChange(event) {
+    const tools = this.state.tools;
+
+    Object.keys(tools).forEach(key => {
+      const tool = tools[key];
+      tool['selected'] = (tool.TOOL_NAME === event.target.value);
+    });
+
+    const activeTool = this.getActiveTool();
+
+    this.setState({
+      tools: tools,
+      selectedTool: activeTool
+    });
+  }
+
+  onInspectorChange(e) {
+    const selectedTool = this.state.selectedTool;
+    let value = isNumeric(e.target.value) ? parseInt(e.target.value, 10) : e.target.value
+
+    selectedTool.currentShapeProperties[e.target.name] = value
+
+    this.setState({
+      selectedTool
+    });
+
+    //update the tool state
+    this.currentShapeProperties = selectedTool.currentShapeProperties;
   }
 
   componentWillReceiveProps(nextProps) {
     console.log('Editor props received ', nextProps);
-    //this.editorHeight = nextProps.editorHeight - 90;
 
-    //draw shapes
+    //draw shapes on the drawCanvas
     nextProps.shapes.forEach(shape => {
       shape.draw(this.drawCanvas.context);
     });
   }
 
- 
+
+  componentWillMount() {
+    //set the state 
+    const tool = this.getActiveTool();
+
+    this.setState({
+      selectedTool: tool
+    });
+  }
 
   componentDidMount() {
-    //The canvas ref is valid now
-    this.getTool('RectangleTool').setCanvas(this.selectionCanvas);
-    this.getTool('SelectionTool').setCanvas(this.selectionCanvas);
+
+    //The canvas ref is valid now, give each tool their canvas to draw on
+    Object.keys(this.state.tools).forEach(key => {
+      const tool = this.state.tools[key];
+      tool.setCanvas(this.selectionCanvas);
+    });
   }
               
   render() {
     const { canvasSize, editorHeight } = this.props;
 
     const canvasGroupStyle = {
-      height: editorHeight - 90, 
-      cursor:this.getTool(this.props.selectedToolName).cursor | 'crosshair'
+      height: editorHeight - 90
     };
 
-    console.log('canvasGroup Style', canvasGroupStyle);
     return (
       <div className="editor">
-        <Toolbar className="toolbar" onChange={this.handleToolChange} toolname={this.props.selectedToolName} />
+        <Toolbar className="toolbar" 
+                 onChange={this.handleToolChange} 
+                 tools={this.state.tools}
+                 selectedTool={this.state.selectedTool}
+                 onInspectorChange={this.onInspectorChange}
+                 shapeProperties={this.shapeProperties} />
 
         <div className="canvasGroup" 
              ref={(div) => this.canvasGroup = div}
              style={canvasGroupStyle}
              onMouseDown={this.onMouseDown}
              onMouseMove={this.onMouseMove}
-             onMouseUp={this.onMouseUp}
-        >
+             onMouseUp={this.onMouseUp} >
 
             <DrawCanvas id="drawCanvas" 
                         ref={(canvas) => this.drawCanvas = canvas }
                         canvasSize={canvasSize}
-                    
                          />
                       
             
             <DrawCanvas id="selectionCanvas" 
                         ref={(canvas) => this.selectionCanvas = canvas }
                         canvasSize={canvasSize}
-            
                          />
-            
+              
         </div>
       </div>
     );
