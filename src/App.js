@@ -51,8 +51,6 @@ class App extends Component {
   }
 
   onAddShape(e) {
-    console.log('Shape Added', e.detail);
-
     //keep track off all shapes to display
     this.setState({
       shapes: this.state.shapes.concat([e.detail])

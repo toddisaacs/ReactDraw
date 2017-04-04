@@ -101,8 +101,6 @@ class Editor extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('Editor props received ', nextProps);
-
     //draw shapes on the drawCanvas
     nextProps.shapes.forEach(shape => {
       shape.draw(this.drawCanvas.context);

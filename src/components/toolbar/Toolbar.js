@@ -7,22 +7,7 @@ class Toolbar extends Component {
 
   selectTool = null;
 
-  //TODO - this is used in two places look for better way to handle the "active tool"
-  getTool(tools) {
-    let selectedTool = null;
-
-    Object.keys(tools).forEach(key => {
-      const tool = tools[key];
-      if (tool.selected ) {
-        selectedTool = tool;
-      }
-    });
-
-    return (selectedTool) ? selectedTool : this.props.tools['SelectionTool'];
-  }
-
   componentWillMount() {
-    //this.selectedTool = this.getTool(this.props.tools);
     this.shapeProperties = this.props.selectedTool.currentShapeProperties;
   }
 
@@ -31,7 +16,6 @@ class Toolbar extends Component {
   }
 
   render() {
-
     return (
       <div id="toolbar" className="toolbar" >
         <div className="tool-holder">
