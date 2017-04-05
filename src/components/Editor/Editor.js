@@ -20,7 +20,6 @@ class Editor extends Component {
     this.handleToolChange = this.handleToolChange.bind(this);
     this.onInspectorChange = this.onInspectorChange.bind(this);
 
-    this.getActiveTool = this.getActiveTool.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
@@ -38,24 +37,10 @@ class Editor extends Component {
 
     //set initial state
     this.state = {
-      tools: this.tools
+      tools: this.tools,
+      selectedTool: selectionTool
     }
-
   }
-
-  getActiveTool() {
-    let selectedTool = null;
-
-    Object.keys(this.state.tools).forEach(key => {
-      const tool = this.state.tools[key];
-      if (tool.selected ) {
-        selectedTool = tool;
-      }
-    });
-
-    return selectedTool;
-  }
-
  
   /* delegate mouse events to the active tool */
   onMouseDown = (e) => {
@@ -72,13 +57,15 @@ class Editor extends Component {
 
   handleToolChange(event) {
     const tools = this.state.tools;
+    const toolName = event.target.value;
 
+    //reset selection
     Object.keys(tools).forEach(key => {
       const tool = tools[key];
-      tool['selected'] = (tool.TOOL_NAME === event.target.value);
+      tool['selected'] = (tool.TOOL_NAME === toolName);
     });
 
-    const activeTool = this.getActiveTool();
+    let activeTool = tools[toolName];
 
     this.setState({
       tools: tools,
@@ -104,16 +91,6 @@ class Editor extends Component {
     //draw shapes on the drawCanvas
     nextProps.shapes.forEach(shape => {
       shape.draw(this.drawCanvas.context);
-    });
-  }
-
-
-  componentWillMount() {
-    //set the state 
-    const tool = this.getActiveTool();
-
-    this.setState({
-      selectedTool: tool
     });
   }
 
