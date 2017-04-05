@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import './App.css';
 import  Editor from './components/Editor/Editor';
-import { rectIntersect } from './components/util';
+import { rectIntersect } from './utils/util';
 
 class App extends Component {
 
