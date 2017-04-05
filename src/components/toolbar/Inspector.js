@@ -82,7 +82,7 @@ export default class Inspector extends Component {
 										name="cornerRadius"
 										value={shapeProperties.cornerRadius}
 										onChange={this.props.onInspectorChange}>
-							{	[...Array(20)].map((x, i) => 
+							{	[...new Array(20)].map((x, i) =>
 								<option key={i} value={i}>{i}</option>
 							)}
 						</select>
@@ -108,4 +108,4 @@ export default class Inspector extends Component {
 Inspector.propTypes = {
   shapeProperties: PropTypes.object,
   onInspectorChange: PropTypes.func
-}
+};
