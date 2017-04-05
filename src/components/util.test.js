@@ -25,5 +25,40 @@ it('test isNumeric', () => {
     //Hexidecimal
     expect(isNumeric('0x23')).toBeTruthy();
 
+});
+
+it('test rect no intersection ABOVE', () => {
+
+});
+
+it('test rect no intersection BELOW', () => {
+
+});
+
+it('test rect no intersection LEFT', () => {
+
+});
+
+it('test rect no intersection RIGHT', () => {
+
+});
+
+it('test rect intersection RIGHT EDGE', () => {
+
+});
+
+it('test rect intersection LEFT EDGE', () => {
+
+});
+
+it('test rect intersection TOP EDGE', () => {
+
+});
+
+it('test rect intersection BOTTOM EDGE', () => {
+
+});
+
+it('test rect intersection ALL EDGES', () => {
 
 });

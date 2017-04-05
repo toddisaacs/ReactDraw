@@ -12,8 +12,6 @@ export default class BaseTool {
     this.endPos = null;
 
     this.mouseDown = false;
-
-
   }
 
   setCanvas(drawCanvas) {

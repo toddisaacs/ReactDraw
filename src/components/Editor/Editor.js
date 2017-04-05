@@ -4,7 +4,7 @@ import './Editor.css';
 import  DrawCanvas from '../DrawCanvas/DrawCanvas';
 import Toolbar from '../toolbar/Toolbar';
 
-import {isNumeric} from '../util';
+import { isNumeric } from '../util';
 
 import { SelectionTool, RectangleTool } from '../tools'
 

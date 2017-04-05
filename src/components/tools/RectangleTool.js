@@ -19,14 +19,6 @@ export default class RectangleTool extends BaseTool {
     this.drawCanvas = drawCanvas;
   }
 
-  getCursorPosition(e) {
-    let rect = this.drawCanvas.canvasRef.getBoundingClientRect();
-    return {
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top
-    };
-  }
-
   drawRectOutline(startPos, endPos) {
     const g = this.drawCanvas.context;
     
