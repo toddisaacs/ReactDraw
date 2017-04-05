@@ -50,20 +50,6 @@ export default class RectangleTool extends BaseTool {
     this.drawCanvas.context.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
   }
 
-
-	onMouseDown(e) {
-    this.mouseDown = true;
-    this.startPos = this.getCursorPosition(e);
-  }
-
-  onMouseMove(e) {
-    if (this.mouseDown) {
-      this.drawCanvas.clearCanvas();
-      let currentPos = this.getCursorPosition(e);
-      this.drawRectOutline(this.startPos, currentPos);  
-    }
-  }
-
   onMouseUp(e) {
     this.mouseDown = false;
 
