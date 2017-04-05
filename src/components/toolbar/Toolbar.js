@@ -1,25 +1,15 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 
 import './ToolBar.css';
 import Inspector from './Inspector';
 
-class Toolbar extends Component {
+const Toolbar = ({tools, selectedTool, onChange, onInspectorChange}) => (
 
-  componentWillMount() {
-    this.shapeProperties = this.props.selectedTool.currentShapeProperties;
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.shapeProperties = {...nextProps.selectedTool.currentShapeProperties};
-  }
-
-  render() {
-    return (
       <div id="toolbar" className="toolbar" >
         <div className="tool-holder">
         
-          {Object.keys(this.props.tools).map(key => {
-            const tool = this.props.tools[key];
+          {Object.keys(tools).map(key => {
+            const tool = tools[key];
 
             return (
               <span key={tool.TOOL_NAME}>
@@ -27,18 +17,17 @@ class Toolbar extends Component {
                 <input  type="radio" 
                         name="tool" 
                         value={tool.TOOL_NAME}
-                        checked={this.props.selectedTool.TOOL_NAME === tool.TOOL_NAME}
-                        onChange={this.props.onChange} /></span>
+                        checked={selectedTool.TOOL_NAME === tool.TOOL_NAME}
+                        onChange={onChange} /></span>
             )
           })}
 
         </div>
-        <Inspector shapeProperties={this.shapeProperties} 
-                   onInspectorChange={this.props.onInspectorChange}/>
+        <Inspector shapeProperties={selectedTool.currentShapeProperties}
+                   onInspectorChange={onInspectorChange}/>
       </div>
-    );
-  }
-}
+
+);
 
 Toolbar.propTypes = {
   tools: PropTypes.object,

@@ -5,7 +5,7 @@ import './Inspector.css';
 export default class Inspector extends Component {
 	
 	renderStrokeWidth(shapeProperties) {
-		if (!shapeProperties.hasOwnProperty('strokeWidth')) {
+		if (!shapeProperties || !shapeProperties.hasOwnProperty('strokeWidth')) {
 			return null;
 		}
 
@@ -28,7 +28,7 @@ export default class Inspector extends Component {
 
 
 	renderStrokeColor(shapeProperties) {
-		if (!shapeProperties.hasOwnProperty('strokeColor')) {
+		if (!shapeProperties || !shapeProperties.hasOwnProperty('strokeColor')) {
 			return null;
 		}
 
@@ -49,7 +49,7 @@ export default class Inspector extends Component {
 	}
 
 	renderFillColor(shapeProperties) {
-		if (!shapeProperties.hasOwnProperty('fillColor')) {
+		if (!shapeProperties || !shapeProperties.hasOwnProperty('fillColor')) {
 			return null;
 		}
 
@@ -70,7 +70,7 @@ export default class Inspector extends Component {
 	}
 
 	renderCornerRadius(shapeProperties) {
-		if (!shapeProperties.hasOwnProperty('strokeWidth')) {
+		if (!shapeProperties || !shapeProperties.hasOwnProperty('strokeWidth')) {
 			return null;
 		}
 
