@@ -10,26 +10,16 @@ class App extends Component {
   waitForResize;
   tools = {};
 
-	constructor(props) {
-    super(props);
+  //set initial state
+  state = {
+    appHeight: window.screen.availHeight,
+    canvasSize: {width: 1200, height:1200},
+    //workaround for handling the drawing outside of react TODO look at react canvas
+    shapes: [],
+    selectedShapes: []
+  };
 
-    //bind methods
-    this.windowResize = this.windowResize.bind(this);
-    this.changeTool = this.changeTool.bind(this);
-    this.onAddShape = this.onAddShape.bind(this);
-    this.onSelection = this.onSelection.bind(this);
-
-    //set initial state
-    this.state = {
-      appHeight: window.screen.availHeight,
-      canvasSize: {width: 1200, height:1200},
-      //workaround for handling the drawing outside of react TODO look at react canvas
-      shapes: [],
-      selectedShapes: []
-    };
-  }
-
-  resizeEditor() {
+  resizeEditor = () => {
     this.setState({ appHeight: this.appRef.clientHeight });
   }
 
@@ -44,7 +34,7 @@ class App extends Component {
   /*
     Handles resize "finish" by waiting for user to pause.
   */
-  windowResize() {
+  windowResize = () =>  {
     clearTimeout(this.waitForResize);
 
     this.waitForResize = setTimeout( () => {
@@ -53,14 +43,14 @@ class App extends Component {
     }, 250);
   }
 
-  onAddShape(e) {
+  onAddShape  = (e) =>  {
     //keep track off all shapes to display
     this.setState({
       shapes: this.state.shapes.concat([e.detail])
     });
   }
 
-  onSelection(e) {
+  onSelection = (e) =>  {
     const mouseBox = e.detail;
     const selectedShapes = [];
 

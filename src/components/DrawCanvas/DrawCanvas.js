@@ -8,23 +8,20 @@ class DrawCanvas extends Component {
   constructor(props) {
     super(props);
 
-    this.getRef = this.getRef.bind(this);
-    this.clearCanvas = this.clearCanvas.bind(this);
-
     this.tool = props.tool;
   }
 
 
-  getRef(canvas) {
+  getRef = (canvas) => {
     this.canvasRef = canvas;
+  }
+
+  clearCanvas = () => {
+    this.context.clearRect(0, 0, this.canvasRef.width, this.canvasRef.height);
   }
 
   componentDidMount() {
   	this.context = this.canvasRef.getContext('2d');
-  }
-
-  clearCanvas() {
-    this.context.clearRect(0, 0, this.canvasRef.width, this.canvasRef.height);
   }
 
 

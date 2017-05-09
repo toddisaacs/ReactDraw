@@ -16,14 +16,6 @@ class Editor extends Component {
   constructor(props) {
     super(props);
 
-    //bind functions
-    this.handleToolChange = this.handleToolChange.bind(this);
-    this.onInspectorChange = this.onInspectorChange.bind(this);
-
-    this.onMouseDown = this.onMouseDown.bind(this);
-    this.onMouseMove = this.onMouseMove.bind(this);
-    this.onMouseUp = this.onMouseUp.bind(this);
-
     //create all the tools
     const selectionTool = new SelectionTool();
     selectionTool.selected = true;
@@ -55,7 +47,7 @@ class Editor extends Component {
     this.state.selectedTool.onMouseUp(e);
   };
 
-  handleToolChange(event) {
+  handleToolChange = (event)=> {
     const tools = this.state.tools;
     const toolName = event.target.value;
 
@@ -73,7 +65,7 @@ class Editor extends Component {
     });
   }
 
-  onInspectorChange(e) {
+  onInspectorChange = (e) => {
     const selectedTool = this.state.selectedTool;
     let value = isNumeric(e.target.value) ? parseInt(e.target.value, 10) : e.target.value;
 
